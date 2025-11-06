@@ -35,15 +35,15 @@ const InfoModal: React.FC<Props> = ({ onClose }) => {
         </div>
         <div className="p-6 overflow-y-auto space-y-6">
           <InfoItem icon={CalendarDaysIcon} label="Tanggal & Waktu">
-            <p>Kamis, 28 November 2024</p>
-            <p>08:30 - 16:00 WITA</p>
+            <p>Rabu, 19 - 20 November 2025</p>
+            <p>09:30 - 12:00 WITA</p>
           </InfoItem>
 
           <InfoItem icon={MapPinIcon} label="Lokasi">
             <p>Ruang Rapat Tambora Kantor Gubernur NTB</p>
             <p>Jl. Pejanggik No.12, Mataram, NTB</p>
             <a 
-                href="https://maps.app.goo.gl/your-google-maps-link" 
+                href="https://maps.app.goo.gl/QAP9MWYM8xh6vqC87" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="text-sm text-primary hover:underline mt-1 inline-block"
@@ -53,7 +53,7 @@ const InfoModal: React.FC<Props> = ({ onClose }) => {
           </InfoItem>
 
           <InfoItem icon={UsersIcon} label="Narasumber">
-            <p>Tim Ahli dari LKPP dan LPSE Provinsi NTB.</p>
+            <p>Tim LPSE & PBJ Biro PBJ Provinsi NTB.</p>
           </InfoItem>
           
           <div>
@@ -68,8 +68,10 @@ const InfoModal: React.FC<Props> = ({ onClose }) => {
 
           <InfoItem icon={PhoneIcon} label="Kontak Panitia">
             <p>Jika ada pertanyaan, silakan hubungi:</p>
-            <p>Email: <a href="mailto:lpse@ntbprov.go.id" className="text-primary hover:underline">biropbj@ntbprov.go.id</a></p>
+            <p>Email: <a href="mailto:biropbj@ntbprov.go.id" className="text-primary hover:underline">biropbj@ntbprov.go.id</a></p>
             <p>Telp/WA: <a href="https://wa.me/6281139011909" className="text-primary hover:underline">+62 811-3901-1909</a> (Helpdesk)</p>
+            <p>Telp/WA: <a href="https://wa.me/083874014856" className="text-primary hover:underline">+62 838-7401-4856</a> (Sdr.Hendra)</p>
+            <p>Telp/WA: <a href="https://wa.me/087778286895" className="text-primary hover:underline">+62 877-7828-6895</a> (Sdi.Indah Afriani)</p>
           </InfoItem>
         </div>
         <div className="p-4 border-t border-gray-200 text-right">
