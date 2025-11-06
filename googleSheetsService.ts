@@ -1,8 +1,7 @@
-// Manually define types for import.meta.env to resolve TypeScript errors.
-// This ensures that 'import.meta.env.VITE_APPS_SCRIPT_URL' is recognized
-// without relying on a triple-slash directive that might fail in some environments.
+// FIX: Add type definitions for Vite's `import.meta.env` to resolve TypeScript errors.
+// This ensures that the TypeScript compiler recognizes the `env` property on `import.meta`.
 interface ImportMetaEnv {
-  readonly VITE_APPS_SCRIPT_URL: string;
+  readonly VITE_APPS_SCRIPT_URL?: string;
 }
 
 interface ImportMeta {
@@ -11,20 +10,45 @@ interface ImportMeta {
 
 import { RegistrationData } from './types';
 
+const SCRIPT_URL_LOCAL_STORAGE_KEY = 'googleScriptUrl';
+
 /**
- * Gets the script URL from the VITE_APPS_SCRIPT_URL environment variable.
- * @returns {string} The script URL or an empty string if not set.
+ * Sets the script URL in local storage. This is useful for development or
+ * when an environment variable is not available.
+ * @param {string} url - The Google Apps Script URL.
  */
-const getScriptUrl = (): string => {
-  // Vite exposes env variables on import.meta.env.
-  // The VITE_ prefix is required for Vite to expose it to the client-side code.
-  const scriptUrl = import.meta.env.VITE_APPS_SCRIPT_URL;
-  if (!scriptUrl) {
-    // This log is helpful for developers during local testing.
-    console.warn("VITE_APPS_SCRIPT_URL environment variable is not set. The application will not be able to connect to Google Sheets.");
-  }
-  return scriptUrl || '';
+export const setScriptUrl = (url: string): void => {
+  localStorage.setItem(SCRIPT_URL_LOCAL_STORAGE_KEY, url);
 };
+
+/**
+ * Gets the script URL from the VITE_APPS_SCRIPT_URL environment variable as the first priority.
+ * If not found, it falls back to checking local storage.
+ * @returns {string} The script URL or an empty string if not set in either location.
+ */
+// FIX: Export `getScriptUrl` so it can be imported and used in other modules like App.tsx.
+export const getScriptUrl = (): string => {
+  // Vite exposes env variables on import.meta.env. This is the primary method for production.
+  // The check for `import.meta.env` prevents runtime errors in environments where it's not defined.
+  const scriptUrlFromEnv = (typeof import.meta !== 'undefined' && import.meta.env) 
+    ? import.meta.env.VITE_APPS_SCRIPT_URL 
+    : undefined;
+
+  if (scriptUrlFromEnv) {
+    return scriptUrlFromEnv;
+  }
+  
+  // Fallback to local storage for local development or manual configuration.
+  const scriptUrlFromStorage = localStorage.getItem(SCRIPT_URL_LOCAL_STORAGE_KEY);
+  if (scriptUrlFromStorage) {
+    return scriptUrlFromStorage;
+  }
+
+  // If neither is found, we warn the developer. The app UI should handle this state.
+  console.warn("Google Apps Script URL is not configured. Set the VITE_APPS_SCRIPT_URL environment variable or configure the URL in the application UI.");
+  return '';
+};
+
 
 /**
  * Mengambil semua data pendaftaran dari Google Sheet.
@@ -33,7 +57,7 @@ const getScriptUrl = (): string => {
 export const getRegistrations = async (): Promise<RegistrationData[]> => {
   const scriptUrl = getScriptUrl();
   if (!scriptUrl) {
-    throw new Error("VITE_APPS_SCRIPT_URL is not configured in your environment variables.");
+    throw new Error("Google Apps Script URL is not configured. Please set it up in the app or via environment variables.");
   }
 
   const response = await fetch(scriptUrl);
@@ -81,7 +105,7 @@ export const getRegistrations = async (): Promise<RegistrationData[]> => {
 export const addRegistration = async (data: RegistrationData): Promise<any> => {
   const scriptUrl = getScriptUrl();
   if (!scriptUrl) {
-    throw new Error("VITE_APPS_SCRIPT_URL is not configured in your environment variables.");
+    throw new Error("Google Apps Script URL is not configured. Please set it up in the app or via environment variables.");
   }
 
   const response = await fetch(scriptUrl, {
