@@ -68,8 +68,8 @@ const InfoModal: React.FC<Props> = ({ onClose }) => {
 
           <InfoItem icon={PhoneIcon} label="Kontak Panitia">
             <p>Jika ada pertanyaan, silakan hubungi:</p>
-            <p>Email: <a href="mailto:lpse@ntbprov.go.id" className="text-primary hover:underline">lpse@ntbprov.go.id</a></p>
-            <p>Telp/WA: <a href="https://wa.me/6281234567890" className="text-primary hover:underline">0812-3456-7890</a> (Helpdesk)</p>
+            <p>Email: <a href="mailto:lpse@ntbprov.go.id" className="text-primary hover:underline">biropbj@ntbprov.go.id</a></p>
+            <p>Telp/WA: <a href="https://wa.me/6281139011909" className="text-primary hover:underline">+62 811-3901-1909</a> (Helpdesk)</p>
           </InfoItem>
         </div>
         <div className="p-4 border-t border-gray-200 text-right">
