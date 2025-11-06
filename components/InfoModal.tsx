@@ -40,7 +40,7 @@ const InfoModal: React.FC<Props> = ({ onClose }) => {
           </InfoItem>
 
           <InfoItem icon={MapPinIcon} label="Lokasi">
-            <p>Aula Kantor Gubernur NTB</p>
+            <p>Ruang Rapat Tambora Kantor Gubernur NTB</p>
             <p>Jl. Pejanggik No.12, Mataram, NTB</p>
             <a 
                 href="https://maps.app.goo.gl/your-google-maps-link" 
