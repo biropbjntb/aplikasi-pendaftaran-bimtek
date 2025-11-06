@@ -36,7 +36,7 @@ const InfoModal: React.FC<Props> = ({ onClose }) => {
         <div className="p-6 overflow-y-auto space-y-6">
           <InfoItem icon={CalendarDaysIcon} label="Tanggal & Waktu">
             <p>Rabu, 19 - 20 November 2025</p>
-            <p>09:30 - 12:00 WITA</p>
+            <p>Waktu, 09:30 - 12:00 WITA</p>
           </InfoItem>
 
           <InfoItem icon={MapPinIcon} label="Lokasi">
