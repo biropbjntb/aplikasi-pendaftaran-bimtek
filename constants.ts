@@ -16,5 +16,5 @@ export const BUSINESS_TYPES: string[] = [
   "Lainnya"
 ];
 
-export const REGISTRATION_QUOTA = 150;
+export const REGISTRATION_QUOTA = 100;
 export const ADMIN_PASSWORD = 'admin123';
