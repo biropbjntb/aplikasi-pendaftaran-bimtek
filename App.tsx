@@ -13,7 +13,7 @@ import QuotaFullMessage from './components/QuotaFullMessage';
 import { UsersIcon, InformationCircleIcon, Cog6ToothIcon, LoadingSpinnerIcon } from './components/IconComponents';
 import HeroSlider from './components/HeroSlider';
 import Marquee from './components/Marquee';
-import { getRegistrations, addRegistration } from './googleSheetsService';
+import { getRegistrations, addRegistration, getScriptUrl, setScriptUrl } from './googleSheetsService';
 
 const initialFormData: RegistrationData = {
   company: {
@@ -32,10 +32,56 @@ const initialFormData: RegistrationData = {
   },
 };
 
-// Kuota bisa diatur di sini atau diambil dari tempat lain jika diperlukan
 const REGISTRATION_QUOTA = 150;
 
+const ConfigurationScreen: React.FC<{ onSave: (url: string) => void }> = ({ onSave }) => {
+  const [url, setUrl] = useState('');
+
+  const handleSave = () => {
+    if (url.trim().startsWith('https://script.google.com/macros/s/')) {
+      onSave(url.trim());
+    } else {
+      alert('URL tidak valid. Harap masukkan URL Web App Google Apps Script yang benar.');
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-4 font-sans bg-slate-50">
+      <div className="w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 text-center animate-fade-in">
+        <Cog6ToothIcon className="w-12 h-12 mx-auto text-primary mb-4" />
+        <h1 className="text-2xl font-bold text-gray-800">Konfigurasi Aplikasi</h1>
+        <p className="mt-2 text-gray-600">
+          Untuk menghubungkan aplikasi dengan Google Sheets, harap masukkan URL Web App dari Google Apps Script Anda.
+        </p>
+        <div className="mt-6 text-left">
+          <label htmlFor="scriptUrl" className="block text-sm font-medium text-gray-700 mb-1">
+            URL Google Apps Script
+          </label>
+          <input
+            id="scriptUrl"
+            type="url"
+            value={url}
+            onChange={(e) => setUrl(e.target.value)}
+            placeholder="https://script.google.com/macros/s/..."
+            className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:border-primary-light focus:ring-primary-light sm:text-sm"
+          />
+        </div>
+        <button
+          onClick={handleSave}
+          className="mt-6 w-full inline-flex items-center justify-center gap-2 px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-primary hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-light transition-colors"
+        >
+          Simpan & Lanjutkan
+        </button>
+        <p className="mt-4 text-xs text-gray-500">
+          URL ini akan disimpan di browser Anda. Aplikasi yang di-deploy ke Netlify akan menggunakan URL dari environment variable.
+        </p>
+      </div>
+    </div>
+  );
+};
+
 const App: React.FC = () => {
+  const [isConfigured, setIsConfigured] = useState(() => !!getScriptUrl());
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [formData, setFormData] = useState<RegistrationData>(initialFormData);
   const [errors, setErrors] = useState<FormErrors>({});
@@ -70,8 +116,15 @@ const App: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+    if (isConfigured) {
+      fetchData();
+    }
+  }, [fetchData, isConfigured]);
+
+  const handleConfigSave = (url: string) => {
+    setScriptUrl(url);
+    setIsConfigured(true);
+  };
 
   const updateFormData = useCallback((data: Partial<RegistrationData>) => {
     setFormData((prev) => ({
@@ -192,9 +245,13 @@ const App: React.FC = () => {
     }
   };
 
+  if (!isConfigured) {
+    return <ConfigurationScreen onSave={handleConfigSave} />;
+  }
+
   const isQuotaFull = registrations.length >= quota;
   
-  if (isLoading) {
+  if (isLoading && isConfigured) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <LoadingSpinnerIcon className="w-12 h-12 text-primary animate-spin" />
