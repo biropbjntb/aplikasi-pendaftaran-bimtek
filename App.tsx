@@ -32,7 +32,7 @@ const initialFormData: RegistrationData = {
   },
 };
 
-const REGISTRATION_QUOTA = 150;
+const REGISTRATION_QUOTA = 100;
 
 const ConfigurationScreen: React.FC<{ onSave: (url: string) => void }> = ({ onSave }) => {
   const [url, setUrl] = useState('');
