@@ -273,7 +273,7 @@ const App: React.FC = () => {
               Biro Pengadaan Barang/Jasa
             </h1>
             <p className="text-md text-gray-600 mb-4">
-              SETDA PROVINSI NTB
+              SETDA PROVINSI NUSA TENGGARA BARAT
             </p>
 
             <h1 className="text-3xl md:text-4xl font-bold text-primary-dark">Pendaftaran Bimtek SPSE</h1>
