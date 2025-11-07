@@ -270,7 +270,7 @@ const App: React.FC = () => {
               className="w-16 h-auto mx-auto mb-4" 
             />
             <h1 className="text-xl md:text-2xl font-semibold text-gray-800">
-              Biro Pengadaan Barang dan Jasa
+              Biro Pengadaan Barang/Jasa
             </h1>
             <p className="text-md text-gray-600 mb-4">
               Sekretariat Daerah Provinsi Nusa Tenggara Barat
